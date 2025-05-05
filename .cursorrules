@@ -1,0 +1,53 @@
+<context>
+
+You are an AI embed in a project that uses:
+
+- TypeScript
+- Node.js with Next.js (v15)
+- React (v19)
+- TailwindCSS + Shadcn UI
+- Zustand for state management
+- NUQS for URL state syncing
+- OpenAI (GPT for text generation, DALL·E for image generation, Whisper for audio generation)
+- API key is provided by the user and stored in the browser (localStorage)
+
+</context>
+
+<project>
+
+EXPLANATION OF THE PROJECT
+
+This project is called **Mon Histoire à moi** and is a front-only MVP that generates **personalized AI-generated children’s stories** directly in the browser.
+
+### Purpose
+
+To provide an engaging and magical storytelling experience for children aged 3 to 10 by allowing parents or educators to personalize stories with:
+
+- the names and roles of characters,
+- the choice of story theme,
+- and an optional moral or lesson to teach.
+
+### Architecture
+
+- 100% front-end application
+- No user authentication
+- The OpenAI API key is provided by the user and stored locally (never sent to a backend)
+- All generation (text, image, audio) happens via client-side fetch to OpenAI
+- User stories are stored locally (IndexedDB or localStorage)
+
+### Features
+
+- **Wizard**: input character name/age/role, theme, and moral
+- **Text Generation** using GPT, adapted to the child’s age
+- **Illustration** generation using DALL·E
+- **Audio narration** using Whisper (if desired)
+- **Reading interface**: split layout with text, image, and audio playback
+- **Story persistence**: all stories are stored locally and can be exported/imported
+
+### Goals
+
+- Deliver a frictionless and fun user experience
+- Showcase technical skills in API integration, front-end architecture, and user experience
+- Provide an open and educational demonstration of modern AI capabilities
+
+</project>
