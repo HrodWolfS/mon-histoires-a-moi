@@ -13,6 +13,7 @@ export type Character = {
 type CharacterStore = {
   characters: Character[];
   currentCharacter: Partial<Character>;
+  selectedCharacterId: string | null;
 
   // Actions pour modifier currentCharacter
   setGender: (gender: "boy" | "girl") => void;
@@ -21,10 +22,15 @@ type CharacterStore = {
   setEmotion: (emotion: string) => void;
 
   // Actions sur le store
-  saveCharacter: () => void;
+  saveCharacter: () => Character | null;
   resetCurrentCharacter: () => void;
   removeCharacter: (id: string) => void;
   loadFromLocalStorage: () => void;
+
+  // Gestion du personnage sélectionné
+  selectCharacter: (id: string) => void;
+  getSelectedCharacter: () => Character | null;
+  hasSelectedCharacter: () => boolean;
 };
 
 export const useCharacterStore = create<CharacterStore>()(
@@ -32,6 +38,7 @@ export const useCharacterStore = create<CharacterStore>()(
     (set, get) => ({
       characters: [],
       currentCharacter: {},
+      selectedCharacterId: null,
 
       setGender: (gender) =>
         set((state) => ({
@@ -71,6 +78,7 @@ export const useCharacterStore = create<CharacterStore>()(
 
           set((state) => ({
             characters: [...state.characters, newCharacter],
+            selectedCharacterId: newCharacter.id, // Sélectionner automatiquement le nouveau personnage
           }));
 
           return newCharacter;
@@ -85,6 +93,13 @@ export const useCharacterStore = create<CharacterStore>()(
           characters: state.characters.filter(
             (character) => character.id !== id
           ),
+          // Réinitialiser le personnage sélectionné si c'était celui-ci
+          selectedCharacterId:
+            state.selectedCharacterId === id
+              ? state.characters.length > 1
+                ? state.characters.find((c) => c.id !== id)?.id || null
+                : null
+              : state.selectedCharacterId,
         })),
 
       loadFromLocalStorage: () => {
@@ -99,6 +114,20 @@ export const useCharacterStore = create<CharacterStore>()(
             console.error("Failed to parse stored characters:", error);
           }
         }
+      },
+
+      // Nouvelles fonctions pour la gestion du personnage sélectionné
+      selectCharacter: (id) => set({ selectedCharacterId: id }),
+
+      getSelectedCharacter: () => {
+        const { characters, selectedCharacterId } = get();
+        if (!selectedCharacterId) return null;
+        return characters.find((c) => c.id === selectedCharacterId) || null;
+      },
+
+      hasSelectedCharacter: () => {
+        const { selectedCharacterId } = get();
+        return selectedCharacterId !== null;
       },
     }),
     {

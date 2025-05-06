@@ -373,7 +373,7 @@ export function SlideEmotion({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Continuer l'histoire
+              Choisis maintenant ton thème
             </motion.button>
           </div>
         </motion.div>
