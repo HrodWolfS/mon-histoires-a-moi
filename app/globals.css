@@ -10,6 +10,9 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-fredoka: var(--font-fredoka);
+  --font-quicksand: var(--font-quicksand);
+  --font-comic-neue: var(--font-comic-neue);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +25,17 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-quicksand), Arial, Helvetica, sans-serif;
+}
+
+.font-fredoka {
+  font-family: var(--font-fredoka), cursive;
+}
+
+.font-comic-neue {
+  font-family: var(--font-comic-neue), cursive;
+}
+
+.font-quicksand {
+  font-family: var(--font-quicksand), sans-serif;
 }
