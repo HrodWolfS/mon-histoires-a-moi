@@ -25,7 +25,7 @@ export default function StepTwo() {
 
   const handleComplete = () => {
     // Passer à l'étape de génération d'histoire
-    router.push("/create/story-generation");
+    router.push("/create/summary");
   };
 
   // Ne rien afficher pendant les redirections

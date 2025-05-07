@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SlideLocation } from "./SlideLocation";
 import { SlideMission } from "./SlideMission";
+import { SlideMorale } from "./SlideMorale";
 
 // Liste des émotions pour l'affichage
 const emotions: Record<string, { label: string; icon: string }> = {
@@ -21,13 +22,14 @@ type CreateThemeFlowProps = {
 };
 
 export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
-  const [currentStep, setCurrentStep] = useState<0 | 1>(0);
+  const [currentStep, setCurrentStep] = useState<0 | 1 | 2>(0);
   const router = useRouter();
 
   // Récupérer les informations du store
   const mission = useWizardStore((state) => state.mission);
   const missionDetails = useWizardStore((state) => state.missionDetails);
   const location = useWizardStore((state) => state.location);
+  const morale = useWizardStore((state) => state.morale);
 
   // Récupérer le personnage sélectionné
   const getSelectedCharacter = useCharacterStore(
@@ -52,14 +54,16 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
   };
 
   const handleLocationNext = () => {
-    // Tout est déjà sauvegardé dans le store via les composants slides
-    if (mission && location) {
-      onComplete();
-    }
+    setCurrentStep(2);
+  };
+
+  const handleMoraleNext = () => {
+    onComplete();
   };
 
   // Gestionnaires de retours en arrière
   const handleBackToMission = () => setCurrentStep(0);
+  const handleBackToLocation = () => setCurrentStep(1);
   const handleBackToStart = () => router.push("/create/step-1");
 
   // Si pas de personnage sélectionné, ne rien afficher pendant la redirection
@@ -155,10 +159,10 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
             </motion.button>
           </motion.div>
 
-          {/* Afficher la mission si elle est déjà choisie */}
-          {mission && currentStep === 1 && (
+          {/* Afficher la mission et le lieu si déjà choisis */}
+          {mission && location && (
             <motion.div
-              className="flex items-center gap-2 bg-purple-500/20 backdrop-blur-md px-4 py-2 rounded-full mb-2 max-w-md"
+              className="flex flex-col items-center gap-2 bg-purple-500/20 backdrop-blur-md px-4 py-2 rounded-full mb-2 max-w-md"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
@@ -166,6 +170,7 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
               <span className="text-white font-medium">
                 {selectedCharacter.name} va {mission.toLowerCase()}
                 {missionDetails ? ` ${missionDetails}` : ""}
+                {location ? `, dans ${location.toLowerCase()}` : ""}
               </span>
             </motion.div>
           )}
@@ -238,12 +243,42 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
                 </div>
               </motion.div>
             )}
+
+            {currentStep === 2 && mission && location && (
+              <motion.div
+                key="morale-slide"
+                className="flex flex-col items-center p-4"
+                initial={{ x: "100%", opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: "-100%", opacity: 0 }}
+                transition={{ type: "tween", duration: 0.5 }}
+              >
+                <motion.div
+                  className="mb-6 text-center"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  <h2 className="text-3xl font-bold text-white drop-shadow-md mb-2 font-fredoka">
+                    Quelle morale veux-tu pour l&apos;histoire ?
+                  </h2>
+                  <p className="text-lg text-white/90 max-w-md mx-auto">
+                    Choisis un message à transmettre, ou laisse vide pour une
+                    histoire sans morale !
+                  </p>
+                </motion.div>
+                <SlideMorale
+                  onNext={handleMoraleNext}
+                  onBack={handleBackToLocation}
+                />
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
 
         {/* Indicateur d'étape fixe en bas */}
         <div className="p-4 flex justify-center items-center space-x-2">
-          {[0, 1].map((step) => (
+          {[0, 1, 2, 3].map((step) => (
             <div
               key={step}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${

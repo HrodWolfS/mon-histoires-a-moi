@@ -7,11 +7,13 @@ type WizardStore = {
   missionDetails: string | null;
   location: string | null;
   locationDetails: string | null;
+  morale: string | null;
 
   // Actions
   addMission: (mission: string, details?: string | null) => void;
   addLocation: (location: string, details?: string | null) => void;
   resetWizard: () => void;
+  setMorale: (value: string | null) => void;
 };
 
 export const useWizardStore = create<WizardStore>()(
@@ -21,6 +23,7 @@ export const useWizardStore = create<WizardStore>()(
       missionDetails: null,
       location: null,
       locationDetails: null,
+      morale: null,
 
       addMission: (mission, details = null) =>
         set({ mission, missionDetails: details }),
@@ -34,7 +37,10 @@ export const useWizardStore = create<WizardStore>()(
           missionDetails: null,
           location: null,
           locationDetails: null,
+          morale: null,
         }),
+
+      setMorale: (morale) => set({ morale }),
     }),
     {
       name: "wizard-storage",
