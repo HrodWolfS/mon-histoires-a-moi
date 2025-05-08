@@ -58,7 +58,8 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
   };
 
   const handleMoraleNext = () => {
-    onComplete();
+    // Redirection vers la page de génération d'histoire
+    router.push("/create/story-loading");
   };
 
   // Gestionnaires de retours en arrière

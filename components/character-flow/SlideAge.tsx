@@ -15,7 +15,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
   const setAge = useCharacterStore((state) => state.setAge);
   const currentAge = useCharacterStore((state) => state.currentCharacter.age);
 
-  const ages = [3, 4, 5, 6, 7, 8, 9, 10];
+  const ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
   // Détermination de l'index initial basé sur l'âge actuel
   const [selectedIndex, setSelectedIndex] = useState(() => {
@@ -94,9 +94,10 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
           selectedIndex={selectedIndex}
           onChange={setSelectedIndex}
           itemHeight={70}
+          className="max-w-[50%] mx-auto"
           renderItem={(age, selected) => (
             <span
-              className={`text-4xl font-bold ${
+              className={`text-4xl  text-center font-bold ${
                 selected ? "text-white" : "text-white/70"
               }`}
             >
