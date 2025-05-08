@@ -14,6 +14,7 @@ type CharacterStore = {
   characters: Character[];
   currentCharacter: Partial<Character>;
   selectedCharacterId: string | null;
+  hydrated: boolean;
 
   // Actions pour modifier currentCharacter
   setGender: (gender: "boy" | "girl") => void;
@@ -26,6 +27,8 @@ type CharacterStore = {
   resetCurrentCharacter: () => void;
   removeCharacter: (id: string) => void;
   loadFromLocalStorage: () => void;
+  setHydrated: (value: boolean) => void;
+  hydrate: () => void;
 
   // Gestion du personnage sélectionné
   selectCharacter: (id: string) => void;
@@ -39,6 +42,7 @@ export const useCharacterStore = create<CharacterStore>()(
       characters: [],
       currentCharacter: {},
       selectedCharacterId: null,
+      hydrated: false,
 
       setGender: (gender) =>
         set((state) => ({
@@ -79,6 +83,7 @@ export const useCharacterStore = create<CharacterStore>()(
           set((state) => ({
             characters: [...state.characters, newCharacter],
             selectedCharacterId: newCharacter.id, // Sélectionner automatiquement le nouveau personnage
+            hydrated: true,
           }));
 
           return newCharacter;
@@ -109,15 +114,71 @@ export const useCharacterStore = create<CharacterStore>()(
         if (stored) {
           try {
             const parsed = JSON.parse(stored);
-            set(parsed.state);
+            set({ ...parsed.state, hydrated: true });
           } catch (error) {
             console.error("Failed to parse stored characters:", error);
+            set({ hydrated: true }); // Même en cas d'erreur, considérer comme hydraté
           }
+        } else {
+          set({ hydrated: true }); // Pas de données stockées, mais hydratation terminée
         }
       },
 
-      // Nouvelles fonctions pour la gestion du personnage sélectionné
-      selectCharacter: (id) => set({ selectedCharacterId: id }),
+      hydrate: () => {
+        const local = localStorage.getItem("character-storage");
+        if (local) {
+          try {
+            const parsed = JSON.parse(local);
+            if (parsed && parsed.state) {
+              const { characters, selectedCharacterId } = parsed.state;
+
+              // Si on a des personnages
+              if (Array.isArray(characters) && characters.length > 0) {
+                // Trouver le personnage sélectionné ou prendre le premier
+                const selectedCharacter = selectedCharacterId
+                  ? characters.find((c) => c.id === selectedCharacterId)
+                  : characters[0];
+
+                set({
+                  characters,
+                  selectedCharacterId:
+                    selectedCharacterId || characters[0]?.id || null,
+                  currentCharacter: selectedCharacter || characters[0] || {},
+                  hydrated: true,
+                });
+
+                console.log(
+                  "Hydrate: personnage chargé",
+                  selectedCharacter || characters[0]
+                );
+              } else {
+                set({ hydrated: true });
+              }
+            } else {
+              set({ hydrated: true });
+            }
+          } catch (error) {
+            console.error("Erreur lors de l'hydratation:", error);
+            set({ hydrated: true });
+          }
+        } else {
+          set({ hydrated: true });
+        }
+      },
+
+      setHydrated: (value) => set({ hydrated: value }),
+
+      selectCharacter: (id) => {
+        const character = get().characters.find((c) => c.id === id);
+        if (character) {
+          set({
+            selectedCharacterId: id,
+            // Met à jour currentCharacter avec les données du personnage sélectionné
+            currentCharacter: { ...character },
+            hydrated: true,
+          });
+        }
+      },
 
       getSelectedCharacter: () => {
         const { characters, selectedCharacterId } = get();
@@ -132,6 +193,11 @@ export const useCharacterStore = create<CharacterStore>()(
     }),
     {
       name: "character-storage",
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.setHydrated(true);
+        }
+      },
     }
   )
 );

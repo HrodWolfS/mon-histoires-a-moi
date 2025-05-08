@@ -12,7 +12,7 @@ type WizardStore = {
   // Actions
   addMission: (mission: string, details?: string | null) => void;
   addLocation: (location: string, details?: string | null) => void;
-  resetWizard: () => void;
+  resetTheme: () => void;
   setMorale: (value: string | null) => void;
 };
 
@@ -31,7 +31,7 @@ export const useWizardStore = create<WizardStore>()(
       addLocation: (location, details = null) =>
         set({ location, locationDetails: details }),
 
-      resetWizard: () =>
+      resetTheme: () =>
         set({
           mission: null,
           missionDetails: null,

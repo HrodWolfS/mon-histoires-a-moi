@@ -29,6 +29,7 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
   const mission = useWizardStore((state) => state.mission);
   const missionDetails = useWizardStore((state) => state.missionDetails);
   const location = useWizardStore((state) => state.location);
+  const locationDetails = useWizardStore((state) => state.locationDetails);
   const morale = useWizardStore((state) => state.morale);
 
   // Récupérer le personnage sélectionné
@@ -58,8 +59,8 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
   };
 
   const handleMoraleNext = () => {
-    // Redirection vers la page de génération d'histoire
-    router.push("/create/story-loading");
+    // Redirection vers la page de résumé
+    router.push("/create/summary");
   };
 
   // Gestionnaires de retours en arrière
@@ -163,16 +164,19 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
           {/* Afficher la mission et le lieu si déjà choisis */}
           {mission && location && (
             <motion.div
-              className="flex flex-col items-center gap-2 bg-purple-500/20 backdrop-blur-md px-4 py-2 rounded-full mb-2 max-w-md"
+              className="bg-white/10 backdrop-blur-md rounded-xl p-4 text-white text-center max-w-md mx-auto"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              <span className="text-white font-medium">
+              <p className="text-lg font-bold">
                 {selectedCharacter.name} va {mission.toLowerCase()}
-                {missionDetails ? ` ${missionDetails}` : ""}
-                {location ? `, dans ${location.toLowerCase()}` : ""}
-              </span>
+                {missionDetails && ` : ${missionDetails}`} !
+              </p>
+              <p className="text-sm text-white/80 mt-1">
+                📍 Lieu : {location}
+                {locationDetails && ` — ${locationDetails}`}
+              </p>
             </motion.div>
           )}
         </div>

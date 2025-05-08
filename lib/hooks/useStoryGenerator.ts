@@ -2,7 +2,7 @@
 import { useAIClient } from "@/lib/hooks/useAIClient";
 import { useCharacterStore } from "@/lib/stores/character";
 import { useWizardStore } from "@/lib/stores/wizard";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type StorySection = {
   title: string;
@@ -11,26 +11,96 @@ export type StorySection = {
 
 export function useStoryGenerator() {
   const { request } = useAIClient();
-  const character = useCharacterStore((s) => s.currentCharacter);
-  const wizard = useWizardStore((s) => s);
+  const getSelectedCharacter = useCharacterStore((s) => s.getSelectedCharacter);
+  const hydrated = useCharacterStore((s) => s.hydrated);
+  const resetTheme = useWizardStore((s) => s.resetTheme);
+  const { mission, missionDetails, location, locationDetails, morale } =
+    useWizardStore((s) => s);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [character, setCharacter] = useState<any>(null);
+  const generationInProgress = useRef(false);
+
+  useEffect(() => {
+    if (hydrated) {
+      const selectedCharacter = getSelectedCharacter();
+      console.log("Personnage sélectionné :", selectedCharacter);
+      setCharacter(selectedCharacter);
+    }
+  }, [hydrated, getSelectedCharacter]);
+
+  const missionRef = useRef(mission);
+  const missionDetailsRef = useRef(missionDetails);
+  const locationRef = useRef(location);
+  const locationDetailsRef = useRef(locationDetails);
+  const moraleRef = useRef(morale);
+
+  useEffect(() => {
+    missionRef.current = mission;
+    missionDetailsRef.current = missionDetails;
+    locationRef.current = location;
+    locationDetailsRef.current = locationDetails;
+    moraleRef.current = morale;
+  }, [mission, missionDetails, location, locationDetails, morale]);
 
   const generateStory = useCallback(async (): Promise<
     StorySection[] | null
   > => {
+    if (generationInProgress.current) {
+      console.log("Génération déjà en cours, ignorée");
+      return null;
+    }
+
     setLoading(true);
     setError(null);
+    generationInProgress.current = true;
 
-    const characterName = character.name;
-    const characterAge = character.age;
-    const characterGender = character.gender;
-    const mission = wizard.mission;
-    const location = wizard.location;
-    const morale = wizard.morale;
+    try {
+      if (!hydrated) {
+        setError(
+          "Chargement des données du personnage en cours, veuillez patienter..."
+        );
+        setLoading(false);
+        generationInProgress.current = false;
+        return null;
+      }
 
-    const prompt = `
+      const currentCharacter = getSelectedCharacter();
+      console.log("generateStory - Personnage utilisé:", currentCharacter);
+
+      if (
+        !currentCharacter ||
+        typeof currentCharacter.name !== "string" ||
+        typeof currentCharacter.age !== "number" ||
+        !["boy", "girl"].includes(currentCharacter.gender as string)
+      ) {
+        setError("Les informations du personnage sont incomplètes.");
+        console.log("Données du personnage invalides:", { currentCharacter });
+        setLoading(false);
+        generationInProgress.current = false;
+        return null;
+      }
+
+      const characterName = currentCharacter.name;
+      const characterAge = currentCharacter.age;
+      const characterGender = currentCharacter.gender;
+
+      const formattedLocation =
+        locationRef.current === "Crée ton lieu"
+          ? locationDetailsRef.current || "un lieu mystérieux"
+          : `${locationRef.current}${
+              locationDetailsRef.current
+                ? `, ${locationDetailsRef.current}`
+                : ""
+            }`;
+
+      const formattedMission =
+        missionDetailsRef.current && missionDetailsRef.current !== "non précisé"
+          ? `${missionRef.current} : ${missionDetailsRef.current}`
+          : missionRef.current;
+
+      const prompt = `
 Tu es un auteur d'histoires pour enfants. Crée une histoire captivante et immersive adaptée à un enfant de ${characterAge} ans.
 
 PERSONNAGE PRINCIPAL :
@@ -39,13 +109,13 @@ PERSONNAGE PRINCIPAL :
 - Genre : ${characterGender === "boy" ? "garçon" : "fille"}
 
 ÉLÉMENTS DE L'HISTOIRE :
-- Mission principale : ${mission}
-- Lieu de l'aventure : ${location}
-${
-  morale
-    ? `- Morale/leçon à inclure : ${morale}`
-    : "- Pas de morale spécifique requise"
-}
+- Mission principale : ${formattedMission}
+- Lieu de l'aventure : ${formattedLocation}
+$${
+        moraleRef.current
+          ? `- Morale/leçon à inclure : ${moraleRef.current}`
+          : "- Pas de morale spécifique requise"
+      }
 
 INSTRUCTIONS PRÉCISES :
 1. L'histoire doit être divisée en exactement 5 parties, chacune avec un titre et un contenu
@@ -75,15 +145,9 @@ IMPORTANT :
 - Assure-toi que le texte est approprié pour un enfant de ${characterAge} ans
 `;
 
-    try {
       const response = await request("chat/completions", {
         model: "gpt-4",
-        messages: [
-          {
-            role: "user",
-            content: prompt,
-          },
-        ],
+        messages: [{ role: "user", content: prompt }],
         temperature: 0.9,
         max_tokens: 1500,
       });
@@ -91,6 +155,7 @@ IMPORTANT :
       const text = response.choices?.[0]?.message?.content || "";
       try {
         const parsed = JSON.parse(text);
+        resetTheme();
         return parsed;
       } catch (parseError) {
         console.error("Erreur de parsing JSON:", parseError);
@@ -105,8 +170,9 @@ IMPORTANT :
       return null;
     } finally {
       setLoading(false);
+      generationInProgress.current = false;
     }
-  }, [request, character, wizard]);
+  }, [request, getSelectedCharacter, hydrated, resetTheme]);
 
-  return { generateStory, loading, error };
+  return { generateStory, loading, error, hydrated, character };
 }

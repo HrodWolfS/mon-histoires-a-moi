@@ -6,6 +6,7 @@ import {
   Geist_Mono,
   Quicksand,
 } from "next/font/google";
+import ClientInit from "./_components/ClientInit";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${fredoka.variable} ${quicksand.variable} ${comicNeue.variable} antialiased font-quicksand`}
       >
+        <ClientInit />
         {children}
       </body>
     </html>
