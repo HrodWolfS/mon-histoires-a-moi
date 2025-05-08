@@ -17,12 +17,14 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        kids: "bg-purple-500 text-white hover:bg-purple-600 rounded-2xl shadow-xl font-fredoka",
+        kids: "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 rounded-full shadow-[0_4px_10px_rgba(195,99,255,0.5)] font-fredoka transition-all hover:scale-[1.03] active:scale-[0.98] active:shadow-inner",
+        success:
+          "bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600 rounded-full shadow-[0_4px_10px_rgba(72,187,120,0.5)] font-fredoka transition-all hover:scale-[1.03] active:scale-[0.98]",
       },
       size: {
-        default: "h-12 px-4 py-2",
-        sm: "h-9 rounded-xl px-3",
-        lg: "h-14 rounded-2xl px-8",
+        default: "h-12 px-6 py-3",
+        sm: "h-9 rounded-xl px-4 py-2 text-sm",
+        lg: "h-14 rounded-full px-8 py-4 text-xl",
         icon: "h-10 w-10",
       },
     },

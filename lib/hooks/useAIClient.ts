@@ -1,14 +1,15 @@
+import { useApiKeyStore } from "@/lib/stores/apiKey";
 import { useCallback } from "react";
 
 export function useAIClient() {
+  const { apiKey } = useApiKeyStore();
+
   const request = useCallback(
     async <T = any>(
       path: string,
       body: Record<string, any>,
       method: "POST" | "GET" = "POST"
     ): Promise<T> => {
-      const apiKey = localStorage.getItem("openai-api-key");
-
       if (!apiKey) {
         throw new Error("Clé API OpenAI non fournie");
       }
@@ -37,7 +38,7 @@ export function useAIClient() {
 
       return response.json();
     },
-    []
+    [apiKey]
   );
 
   return { request };

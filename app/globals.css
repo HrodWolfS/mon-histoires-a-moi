@@ -40,39 +40,6 @@ body {
   font-family: var(--font-quicksand), sans-serif;
 }
 
-@layer components {
-  /* Remove list styling */
-  .picker {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .mobile-picker-column {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: block;
-    width: 100%;
-    text-align: center;
-  }
-
-  .mobile-picker-column li {
-    transition: all 0.3s ease;
-  }
-
-  /* masque les deux traits haut et bas */
-  .picker > .picker-wrapper > .picker > div[style*="pointer-events:none"] {
-    display: none !important;
-  }
-
-  /* Hide the top/bottom divider lines inside .picker */
-  .picker > div[style*="pointer-events:none"] {
-    display: none !important;
-  }
-  /* retire le background de la zone de sélection */
-  .picker .mobile-picker-selection-indicator {
-    background: red !important;
-  }
+button {
+  cursor: pointer;
 }
