@@ -170,7 +170,7 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
 
   // Basculer l'option aléatoire (uniquement pour "Tu me laisses choisir ?")
   const handleToggleRandom = () => {
-    if (isRandomAllowed) {
+    if (isRandomAllowed || isStandardLocation) {
       setUseRandomLocation(!useRandomLocation);
       setError("");
     }

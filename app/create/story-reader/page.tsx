@@ -72,12 +72,12 @@ export default function StoryReaderPage() {
           >
             <div className="mb-8">
               <motion.h2
-                className="text-3xl font-fredoka text-center text-yellow-300 drop-shadow-sm mb-6"
+                className="text-3xl font-fredoka text-center font-bold text-yellow-300 drop-shadow-sm mb-6"
                 initial={{ y: -10 }}
                 animate={{ y: 0 }}
                 transition={{ delay: 0.1 }}
               >
-                {current.title}
+                {current.title.replace(/^Partie \d+\s*:\s*/, "")}
               </motion.h2>
               <motion.div
                 className="text-lg leading-relaxed text-white space-y-4"
