@@ -1,5 +1,6 @@
 "use client";
 
+import { AudioButton } from "@/components/ui/AudioButton";
 import { Button } from "@/components/ui/button";
 import { useStoryStore } from "@/lib/stores/story";
 import { AnimatePresence, motion } from "framer-motion";
@@ -79,6 +80,7 @@ export default function StoryReaderPage() {
               >
                 {current.title.replace(/^Partie \d+\s*:\s*/, "")}
               </motion.h2>
+
               <motion.div
                 className="text-lg leading-relaxed text-white space-y-4"
                 initial={{ y: 10, opacity: 0.5 }}
@@ -94,7 +96,7 @@ export default function StoryReaderPage() {
             </div>
 
             {/* Navigation entre pages */}
-            <div className="flex justify-between mt-10">
+            <div className="flex justify-between items-center mt-10 relative">
               <Button
                 variant={isFirstPage ? "ghost" : "kids"}
                 onClick={prevPage}
@@ -104,6 +106,12 @@ export default function StoryReaderPage() {
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Page précédente
               </Button>
+
+              {/* Centrage absolu */}
+              <div className="absolute left-1/2 transform -translate-x-1/2">
+                <AudioButton text={current.content} />
+              </div>
+
               {isLastPage ? (
                 <Button
                   variant="success"
