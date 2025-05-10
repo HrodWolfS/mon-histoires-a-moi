@@ -72,7 +72,8 @@ export function WheelSelector<T>({
         ref={containerRef}
         style={{
           height: containerHeight,
-          width: "400px",
+          width: "90vw",
+          maxWidth: 400,
         }}
       >
         <div

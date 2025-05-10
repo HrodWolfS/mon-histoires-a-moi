@@ -125,7 +125,7 @@ export function CreateCharacterFlow({
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-dvh overflow-hidden">
       {/* Fond d'écran magique */}
       <div
         className="fixed inset-0 -z-10 bg-cover bg-center"
@@ -135,9 +135,9 @@ export function CreateCharacterFlow({
       {/* Overlay doux pour améliorer lisibilité */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-[-9]" />
 
-      <div className="relative w-full h-screen overflow-y-auto px-4 py-8">
+      <div className="relative w-full h-full overflow-y-auto px-4 md:px-8 xl:px-12 py-6 md:py-10">
         <motion.h1
-          className="text-4xl md:text-5xl font-bold text-center text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)] font-fredoka mb-8"
+          className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold text-center text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)] font-fredoka md:mb-8"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -153,7 +153,7 @@ export function CreateCharacterFlow({
             transition={{ duration: 0.5 }}
           >
             <motion.h2
-              className="text-3xl font-bold text-white drop-shadow-md mb-6 font-fredoka text-center"
+              className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md mb-4 sm:mb-6 font-fredoka text-center"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
@@ -280,7 +280,7 @@ export function CreateCharacterFlow({
             )}
 
             {/* Indicateur d'étape */}
-            <div className="absolute bottom-20 left-0 right-0 flex justify-center items-center space-x-2 p-4">
+            <div className="fixed bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center space-x-2 z-10 pointer-events-none">
               {[0, 1, 2, 3].map((step) => (
                 <div
                   key={step}

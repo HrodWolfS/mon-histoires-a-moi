@@ -233,11 +233,11 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
         <FloatingStars />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl mb-8 px-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-4xl mb-8 px-4">
         {locations.map((location, index) => (
           <motion.div
             key={location.title}
-            className={`cursor-pointer p-6 rounded-xl backdrop-blur-md transition-all transform ${
+            className={`cursor-pointer rounded-xl p-2 sm:p-3 md:p-4 backdrop-blur-md transition-all transform text-sm sm:text-base md:text-lg ${
               selectedLocation === location.title
                 ? "bg-cyan-500/40 border-2 border-white scale-105"
                 : "bg-white/10 border border-white/20 hover:bg-white/20"
@@ -249,10 +249,16 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.08 + 0.6 }}
           >
-            <div className="flex flex-col items-center text-center gap-3">
-              <span className="text-5xl mb-2">{location.emoji}</span>
-              <h3 className="font-bold text-white text-xl">{location.title}</h3>
-              <p className="text-white/80">{location.description}</p>
+            <div className="flex flex-col items-center text-center gap-1 sm:gap-2">
+              <span className="text-2xl sm:text-3xl md:text-3xl mb-1">
+                {location.emoji}
+              </span>
+              <h3 className="font-bold text-white text-sm sm:text-base md:text-base">
+                {location.title}
+              </h3>
+              <p className="text-white/80 text-xs sm:text-xs md:text-sm">
+                {location.description}
+              </p>
             </div>
           </motion.div>
         ))}
@@ -334,10 +340,10 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
         </motion.div>
       )}
 
-      <div className="flex justify-between w-full max-w-md px-4 mt-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:gap-0 w-full max-w-md mt-8">
         <motion.button
           onClick={onBack}
-          className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
+          className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -347,7 +353,7 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
         <motion.button
           onClick={handleContinue}
           disabled={!selectedLocation}
-          className={`px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
+          className={`w-full sm:w-auto px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
             !selectedLocation
               ? "bg-gray-400/50 cursor-not-allowed"
               : "bg-gradient-to-r from-cyan-500 to-blue-500 hover:scale-105"

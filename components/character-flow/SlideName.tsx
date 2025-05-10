@@ -107,15 +107,6 @@ export function SlideName({ gender, onNext, onBack }: SlideNameProps) {
       <FloatingStars />
 
       <div className="flex flex-col items-center justify-center">
-        <motion.h1
-          className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)] font-fredoka mb-2"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          Mon Histoire à Moi
-        </motion.h1>
-
         <motion.div
           className="relative"
           initial={{ y: 50, opacity: 0 }}
@@ -142,13 +133,21 @@ export function SlideName({ gender, onNext, onBack }: SlideNameProps) {
         </motion.div>
 
         <motion.h2
-          className="text-3xl font-bold text-white drop-shadow-md mb-8 font-fredoka"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md mb-3 sm:mb-4 font-fredoka text-center"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
           Comment s'appelle ton {gender === "boy" ? "héros" : "héroïne"} ?
         </motion.h2>
+
+        <motion.p
+          className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 font-quicksand text-center max-w-md"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          Remplissez ce formulaire pour créer votre personnage.
+        </motion.p>
 
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 w-full">
           <motion.form
@@ -164,31 +163,28 @@ export function SlideName({ gender, onNext, onBack }: SlideNameProps) {
               value={name}
               onChange={(e) => setLocalName(e.target.value)}
               placeholder="Prénom"
-              className="w-full text-center py-3 px-4 rounded-full bg-white/80 backdrop-blur-md text-xl font-medium shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className="w-full text-center py-3 px-3 rounded-full bg-white/80 backdrop-blur-md text-xl font-medium shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
 
-            <motion.button
-              type="submit"
-              className={`px-6 py-3 rounded-full text-white text-lg font-bold shadow-md hover:scale-105 transition ${
-                !name.trim()
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-purple-500 to-pink-500"
-              }`}
-              disabled={!name.trim()}
-              whileHover={name.trim() ? { scale: 1.05 } : {}}
-              whileTap={name.trim() ? { scale: 0.95 } : {}}
-            >
-              Continuer
-            </motion.button>
+            <div className="flex flex-row justify-between gap-2 w-full max-w-md mt-6">
+              <motion.button
+                type="button"
+                onClick={onBack}
+                className="w-1/2 py-4 mr-2 rounded-full bg-white/20 backdrop-blur-md text-white text-base font-medium shadow-md hover:bg-white/30 transition"
+                whileHover={{ scale: 1.05 }}
+              >
+                Retour
+              </motion.button>
 
-            <motion.button
-              type="button"
-              onClick={onBack}
-              className="mt-2 text-white/80 underline text-sm hover:text-white"
-              whileHover={{ scale: 1.05 }}
-            >
-              Retour
-            </motion.button>
+              <motion.button
+                type="submit"
+                className="w-1/2 py-4 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-base font-bold shadow-md transition hover:scale-105"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Continuer
+              </motion.button>
+            </div>
           </motion.form>
         </div>
       </div>

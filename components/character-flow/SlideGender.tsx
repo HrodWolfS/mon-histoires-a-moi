@@ -84,17 +84,8 @@ export function SlideGender({ onNext }: SlideGenderProps) {
       {/* Étoiles flottantes */}
       <FloatingStars />
 
-      <motion.h1
-        className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)] font-fredoka"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-      >
-        Mon Histoire à Moi
-      </motion.h1>
-
       <motion.p
-        className="text-lg text-white/90 italic mt-1 mb-6 font-quicksand"
+        className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 font-quicksand text-center max-w-md"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
@@ -103,7 +94,7 @@ export function SlideGender({ onNext }: SlideGenderProps) {
       </motion.p>
 
       <motion.h2
-        className="text-2xl font-bold text-white drop-shadow-md mb-10 font-fredoka"
+        className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md mb-4 sm:mb-6 font-fredoka text-center"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
@@ -111,7 +102,7 @@ export function SlideGender({ onNext }: SlideGenderProps) {
         Qui est le héros de ton histoire ?
       </motion.h2>
 
-      <div className="flex flex-col sm:flex-row gap-10">
+      <div className="flex flex-row gap-10">
         <motion.button
           onClick={() => handleGenderSelect("boy")}
           className="flex flex-col items-center hover:scale-105 transition-all relative cursor-pointer"

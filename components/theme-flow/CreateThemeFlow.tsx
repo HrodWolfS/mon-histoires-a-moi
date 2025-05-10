@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useCharacterStore } from "@/lib/stores/character";
 import { useWizardStore } from "@/lib/stores/wizard";
 import { AnimatePresence, motion } from "framer-motion";
@@ -23,6 +24,7 @@ type CreateThemeFlowProps = {
 
 export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
   const [currentStep, setCurrentStep] = useState<0 | 1 | 2>(0);
+  const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
 
   // Récupérer les informations du store
@@ -73,137 +75,83 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
     return null;
   }
 
+  // Nouveau bloc header compact fusionné
+  const CharacterHeaderCompact = () => (
+    <div className="relative bg-white/10 rounded-2xl px-4 py-3 backdrop-blur-md w-[95%] sm:max-w-xl mx-auto my-4">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <img
+            src={`/images/${selectedCharacter.gender}.png`}
+            alt={selectedCharacter.name}
+            className="w-10 h-10 rounded-full border-2 border-white"
+          />
+          <div className="text-sm leading-tight">
+            <p className="font-bold">{selectedCharacter.name}</p>
+            <p className="text-xs text-white/60">
+              {selectedCharacter.age} ans •{" "}
+              {emotions[selectedCharacter.emotion]?.icon || "👦"}{" "}
+              {emotions[selectedCharacter.emotion]?.label ||
+                selectedCharacter.emotion}
+            </p>
+          </div>
+        </div>
+        <Button variant="ghost" size="sm" onClick={handleBackToStart}>
+          Changer &rarr;
+        </Button>
+      </div>
+      {isExpanded && (
+        <div className="mt-3 text-sm space-y-1">
+          <p>🎯 Mission : {mission || "non défini"}</p>
+          <p>📍 Lieu : {location || "non défini"}</p>
+        </div>
+      )}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-white/20 rounded-full text-white text-xs flex items-center justify-center shadow"
+        tabIndex={-1}
+        aria-label={isExpanded ? "Réduire le résumé" : "Afficher le résumé"}
+      >
+        {isExpanded ? "˄" : "˅"}
+      </button>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen overflow-hidden relative">
+    <div className="fixed inset-0 flex flex-col overflow-hidden">
       {/* Fond d'écran magique */}
       <div
-        className="fixed inset-0 -z-10 bg-cover bg-center"
+        className="absolute inset-0 -z-10 bg-cover bg-center"
         style={{ backgroundImage: "url(/images/background.png)" }}
       />
-
       {/* Overlay doux pour améliorer lisibilité */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-[-9]" />
-
+      {/* Header compact fusionné */}
+      <CharacterHeaderCompact />
       {/* Structure fixe avec header en haut et contenu scrollable */}
-      <div className="flex flex-col h-screen">
-        {/* Header fixe - Titre et infos personnage */}
-        <div className="px-4 py-3 flex flex-col items-center">
-          <motion.h1
-            className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)] font-fredoka mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-          >
-            Mon Histoire à Moi
-          </motion.h1>
-
-          {/* Information du personnage */}
-          <motion.div
-            className="flex items-center gap-4 bg-white/20 backdrop-blur-md rounded-full px-5 py-3 shadow-lg mb-2 w-full max-w-lg justify-center"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-          >
-            <div className="relative">
-              <motion.div
-                className="absolute inset-0 rounded-full bg-white/20 blur-sm z-0"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.4, 0.6, 0.4],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-              />
-              <img
-                src={`/images/${selectedCharacter.gender}.png`}
-                alt={selectedCharacter.name}
-                className="w-12 h-12 relative z-10 rounded-full border-2 border-white"
-              />
-            </div>
-
-            <div className="text-white">
-              <div className="font-bold text-xl">{selectedCharacter.name}</div>
-              <div className="flex items-center gap-3 text-sm">
-                <span>{selectedCharacter.age} ans</span>
-                <span className="text-white/50">•</span>
-                <span className="flex items-center">
-                  <span className="mr-1">
-                    {emotions[selectedCharacter.emotion]?.icon || "👦"}
-                  </span>
-                  {emotions[selectedCharacter.emotion]?.label ||
-                    selectedCharacter.emotion}
-                </span>
-              </div>
-            </div>
-
-            <motion.button
-              onClick={handleBackToStart}
-              className="ml-auto text-white/80 hover:text-white text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-full transition-colors flex items-center gap-1"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Changer
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </motion.button>
-          </motion.div>
-
-          {/* Afficher la mission et le lieu si déjà choisis */}
-          {mission && location && (
-            <motion.div
-              className="bg-white/10 backdrop-blur-md rounded-xl p-4 text-white text-center max-w-md mx-auto"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <p className="text-lg font-bold">
-                {selectedCharacter.name} va {mission.toLowerCase()}
-                {missionDetails && ` : ${missionDetails}`} !
-              </p>
-              <p className="text-sm text-white/80 mt-1">
-                📍 Lieu : {location}
-                {locationDetails && ` — ${locationDetails}`}
-              </p>
-            </motion.div>
-          )}
-        </div>
-
+      <div className="flex flex-col flex-1 min-h-0 justify-center items-center">
         {/* Contenu principal scrollable */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 w-full overflow-y-auto flex flex-col justify-center items-center">
           <AnimatePresence mode="wait">
             {currentStep === 0 && (
               <motion.div
                 key="mission-slide"
-                className="flex flex-col items-center p-4"
+                className="flex flex-col items-center px-4 md:px-8 xl:px-12 py-2 sm:py-4"
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "-100%", opacity: 0 }}
                 transition={{ type: "tween", duration: 0.5 }}
               >
-                <div className="w-full max-w-5xl mx-auto">
+                <div className="w-full max-w-5xl mt-30 mx-auto px-2">
                   <motion.div
-                    className="mb-6 text-center"
+                    className="mb-6 text-center px-2"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                   >
-                    <h2 className="text-3xl font-bold text-white drop-shadow-md mb-2 font-fredoka">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md mb-2 font-fredoka">
                       Quelle mission pour ton héros ?
                     </h2>
-                    <p className="text-lg text-white/90 max-w-md mx-auto">
+                    <p className="text-sm sm:text-base leading-snug text-white/90 max-w-md mx-auto">
                       Choisis la quête que ton personnage va accomplir dans
                       cette aventure
                     </p>
@@ -220,23 +168,23 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
             {currentStep === 1 && mission && (
               <motion.div
                 key="location-slide"
-                className="flex flex-col items-center p-4"
+                className="flex flex-col items-center px-4 md:px-8 xl:px-12 py-2 sm:py-4"
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "-100%", opacity: 0 }}
                 transition={{ type: "tween", duration: 0.5 }}
               >
-                <div className="w-full max-w-5xl mx-auto">
+                <div className="w-full max-w-5xl mt-12 sm:mt-24 md:mt-32 lg:mt-40 mx-auto px-2">
                   <motion.div
-                    className="mb-6 text-center"
+                    className="mb-6 text-center px-2"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                   >
-                    <h2 className="text-3xl font-bold text-white drop-shadow-md mb-2 font-fredoka">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md mb-2 font-fredoka">
                       Où se déroule l&apos;aventure ?
                     </h2>
-                    <p className="text-lg text-white/90 max-w-md mx-auto">
+                    <p className="text-sm sm:text-base leading-snug text-white/90 max-w-md mx-auto">
                       Choisis un monde merveilleux pour cette histoire
                     </p>
                   </motion.div>
@@ -252,37 +200,38 @@ export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
             {currentStep === 2 && mission && location && (
               <motion.div
                 key="morale-slide"
-                className="flex flex-col items-center p-4"
+                className="flex flex-col items-center px-4 md:px-8 xl:px-12 py-2 sm:py-4"
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "-100%", opacity: 0 }}
                 transition={{ type: "tween", duration: 0.5 }}
               >
-                <motion.div
-                  className="mb-6 text-center"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                >
-                  <h2 className="text-3xl font-bold text-white drop-shadow-md mb-2 font-fredoka">
-                    Quelle morale veux-tu pour l&apos;histoire ?
-                  </h2>
-                  <p className="text-lg text-white/90 max-w-md mx-auto">
-                    Choisis un message à transmettre, ou laisse vide pour une
-                    histoire sans morale !
-                  </p>
-                </motion.div>
-                <SlideMorale
-                  onNext={handleMoraleNext}
-                  onBack={handleBackToLocation}
-                />
+                <div className="w-full max-w-5xl mt-12 sm:mt-24 md:mt-32 lg:mt-40 mx-auto px-2">
+                  <motion.div
+                    className="mb-6 text-center px-2"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                  >
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md mb-2 font-fredoka">
+                      Un message à transmettre ?
+                    </h2>
+                    <p className="text-sm sm:text-base leading-snug text-white/90 max-w-sm mx-auto">
+                      Choisis un message à transmettre, ou laisse vide pour une
+                      histoire sans morale !
+                    </p>
+                  </motion.div>
+                  <SlideMorale
+                    onNext={handleMoraleNext}
+                    onBack={handleBackToLocation}
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
-
-        {/* Indicateur d'étape fixe en bas */}
-        <div className="p-4 flex justify-center items-center space-x-2">
+        {/* Indicateur d'étape */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center space-x-2 z-10 pointer-events-none">
           {[0, 1, 2, 3].map((step) => (
             <div
               key={step}

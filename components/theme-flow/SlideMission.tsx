@@ -189,11 +189,11 @@ export function SlideMission({ onNext, onBack }: SlideMissionProps) {
         <FloatingStars />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-5xl mb-8 px-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-5xl mb-8 px-4">
         {missions.map((mission, index) => (
           <motion.div
             key={mission.title}
-            className={`cursor-pointer p-4 rounded-xl backdrop-blur-md transition-all transform ${
+            className={`cursor-pointer rounded-xl p-2 sm:p-3 md:p-4 backdrop-blur-md transition-all transform text-sm sm:text-base md:text-lg ${
               selectedMission === mission.title
                 ? "bg-purple-500/40 border-2 border-white scale-105"
                 : "bg-white/10 border border-white/20 hover:bg-white/20"
@@ -205,10 +205,16 @@ export function SlideMission({ onNext, onBack }: SlideMissionProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 + 0.6 }}
           >
-            <div className="flex flex-col items-center text-center gap-2">
-              <span className="text-4xl mb-2">{mission.emoji}</span>
-              <h3 className="font-bold text-white text-lg">{mission.title}</h3>
-              <p className="text-white/80 text-sm">{mission.description}</p>
+            <div className="flex flex-col items-center text-center gap-1 sm:gap-2">
+              <span className="text-2xl sm:text-3xl md:text-3xl mb-1">
+                {mission.emoji}
+              </span>
+              <h3 className="font-bold text-white text-sm sm:text-base md:text-base">
+                {mission.title}
+              </h3>
+              <p className="text-white/80 text-xs sm:text-xs md:text-sm">
+                {mission.description}
+              </p>
             </div>
           </motion.div>
         ))}
@@ -275,10 +281,10 @@ export function SlideMission({ onNext, onBack }: SlideMissionProps) {
         </motion.div>
       )}
 
-      <div className="flex justify-between w-full max-w-md px-4 mt-8">
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:gap-0 w-full max-w-md mt-8">
         <motion.button
           onClick={onBack}
-          className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
+          className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -288,7 +294,7 @@ export function SlideMission({ onNext, onBack }: SlideMissionProps) {
         <motion.button
           onClick={handleContinue}
           disabled={!selectedMission}
-          className={`px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
+          className={`w-full sm:w-auto px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
             !selectedMission
               ? "bg-gray-400/50 cursor-not-allowed"
               : "bg-gradient-to-r from-purple-500 to-pink-500 hover:scale-105"

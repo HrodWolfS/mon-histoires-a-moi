@@ -35,14 +35,14 @@ export default function StoryReaderPage() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center py-12 px-4 text-white"
+      className="min-h-dvh overflow-hidden flex flex-col items-center justify-center text-white"
       style={{
         backgroundImage: "url(/images/background.png)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-[1000px] mx-auto px-4 md:px-8 xl:px-12 py-6 md:py-10">
         {/* Pagination et progression */}
         <div className="flex justify-between items-center mb-6">
           <div className="text-sm text-white/70">
@@ -73,7 +73,7 @@ export default function StoryReaderPage() {
           >
             <div className="mb-8">
               <motion.h2
-                className="text-3xl font-fredoka text-center font-bold text-yellow-300 drop-shadow-sm mb-6"
+                className="text-xl sm:text-2xl md:text-3xl xl:text-4xl font-fredoka text-center font-bold text-yellow-300 drop-shadow-sm mb-4 sm:mb-6"
                 initial={{ y: -10 }}
                 animate={{ y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -96,19 +96,21 @@ export default function StoryReaderPage() {
             </div>
 
             {/* Navigation entre pages */}
-            <div className="flex justify-between items-center mt-10 relative">
+            <div className="flex flex-col sm:flex-row sm:justify-between items-center mt-8 sm:mt-10 gap-3 sm:gap-0 relative">
               <Button
                 variant={isFirstPage ? "ghost" : "kids"}
                 onClick={prevPage}
                 disabled={isFirstPage}
-                className={isFirstPage ? "opacity-0 cursor-default" : ""}
+                className={`w-full sm:w-auto ${
+                  isFirstPage ? "opacity-0 cursor-default" : ""
+                }`}
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Page précédente
+                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                <span className="hidden sm:inline">Page précédente</span>
               </Button>
 
-              {/* Centrage absolu */}
-              <div className="absolute left-1/2 transform -translate-x-1/2">
+              {/* Centrage absolu pour le bouton audio, ajuster pour mobile si nécessaire */}
+              <div className="order-first sm:order-none sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
                 <AudioButton text={current.content} />
               </div>
 
@@ -116,15 +118,19 @@ export default function StoryReaderPage() {
                 <Button
                   variant="success"
                   onClick={handleReset}
-                  className="ml-auto"
+                  className="w-full sm:w-auto sm:ml-auto"
                 >
-                  <RefreshCw className="w-4 h-4 mr-2" />
-                  Nouvelle histoire
+                  <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+                  <span className="hidden sm:inline">Nouvelle histoire</span>
                 </Button>
               ) : (
-                <Button variant="kids" onClick={nextPage}>
-                  Page suivante
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                <Button
+                  variant="kids"
+                  onClick={nextPage}
+                  className="w-full sm:w-auto"
+                >
+                  <span className="hidden sm:inline">Page suivante</span>
+                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />
                 </Button>
               )}
             </div>

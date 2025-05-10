@@ -41,13 +41,17 @@ export function AudioButton({
         onClick={handleClick}
         disabled={isLoading || isPlaying}
         className={cn(
-          "transition-all duration-300 bg-white/10 backdrop-blur-sm text-white text-sm px-3 py-2 rounded-full font-medium",
-          "flex items-center gap-2 shadow-md",
+          "transition-all duration-300 bg-white/10 backdrop-blur-sm text-white font-medium",
+          "flex items-center justify-center gap-2 shadow-md rounded-full",
+          "px-3 py-2 text-sm sm:px-4 sm:py-2 sm:text-base md:px-5 md:py-2.5",
+          "w-full sm:w-auto",
           (isLoading || isPlaying) && "cursor-not-allowed opacity-70",
           isPlaying && "bg-purple-500/30"
         )}
       >
-        <span className="text-lg">{isLoading ? "⏳" : icons[iconIndex]}</span>
+        <span className="text-lg sm:text-xl">
+          {isLoading ? "⏳" : icons[iconIndex]}
+        </span>
       </button>
       {error && <p className="text-xs text-red-400 mt-1">{error}</p>}
     </div>

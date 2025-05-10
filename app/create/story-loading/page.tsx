@@ -92,7 +92,7 @@ export default function StoryLoadingPage() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center px-4 py-12 text-white"
+      className="min-h-dvh overflow-hidden flex flex-col items-center justify-center text-white px-4 md:px-8 xl:px-12 py-6 md:py-10"
       style={{
         backgroundImage: "url(/images/background.png)",
         backgroundSize: "cover",
@@ -100,7 +100,7 @@ export default function StoryLoadingPage() {
       }}
     >
       <div className="max-w-xl w-full">
-        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 shadow-xl border border-white/20 flex flex-col items-center">
+        <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 md:p-8 shadow-xl border border-white/20 flex flex-col items-center">
           {error ? (
             <div className="text-center">
               <motion.div

@@ -66,15 +66,17 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
     onNext();
   };
 
+  const disabledButton = !!(showInput && !custom && !noMorale);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] w-full">
-      <div className="mb-8 w-full max-w-md">
+    <div className="flex flex-col items-center justify-center min-h-[400px] w-full max-w-[95vw] mx-auto">
+      <div className="mb-8 w-full max-w-md max-w-[95vw] mx-auto">
         <WheelSelector
           items={defaultMorals}
           selectedIndex={selectedIndex}
           onChange={handleSelect}
-          itemHeight={70}
-          className="max-w-[100%] mx-auto"
+          itemHeight={48}
+          className="max-w-[95vw] w-full mx-auto"
           renderItem={(moral, selected) => (
             <p
               className={`text-xl text-center font-fredoka transition-all ${
@@ -87,9 +89,9 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
         />
       </div>
 
-      <div className="flex flex-col items-center gap-6 w-full max-w-md">
+      <div className="flex flex-col items-center gap-6 w-full max-w-md max-w-[95vw] mx-auto">
         <button
-          className="px-4 py-2 rounded-full bg-white/20 text-white font-medium hover:bg-white/30 transition"
+          className="px-3 py-2 rounded-full bg-white/20 text-white font-medium text-base hover:bg-white/30 transition"
           onClick={handleCustom}
         >
           Choisir moi-même
@@ -98,7 +100,7 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
           {showInput && (
             <motion.input
               key="input"
-              className="w-full px-4 py-2 rounded-full bg-white/20 text-white placeholder:text-white/60 focus:outline-none mt-2"
+              className="w-full px-3 py-2 rounded-full bg-white/20 text-white placeholder:text-white/60 focus:outline-none mt-2 text-base"
               placeholder="Écris ta propre morale..."
               value={custom}
               onChange={(e) => setCustom(e.target.value)}
@@ -109,7 +111,7 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
           )}
         </AnimatePresence>
         <button
-          className={`px-4 py-2 rounded-full font-medium transition ${
+          className={`px-3 py-2 rounded-full font-medium text-base transition ${
             noMorale
               ? "bg-cyan-500/80 text-white"
               : "bg-white/20 text-white hover:bg-white/30"
@@ -120,10 +122,10 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
         </button>
       </div>
 
-      <div className="flex justify-between w-full max-w-md mt-8 gap-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:gap-6 w-full max-w-md mt-8">
         <motion.button
           onClick={onBack}
-          className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
+          className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -131,10 +133,12 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
         </motion.button>
         <motion.button
           onClick={handleContinue}
-          className="px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white text-lg font-bold shadow-md transition"
+          className={`w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white text-lg font-bold shadow-md transition ${
+            disabledButton && "opacity-50 cursor-not-allowed"
+          }`}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          disabled={!!(showInput && !custom && !noMorale)}
+          disabled={disabledButton}
         >
           Continuer
         </motion.button>

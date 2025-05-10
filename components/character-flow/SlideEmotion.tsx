@@ -173,15 +173,6 @@ export function SlideEmotion({
         ))}
       </div>
 
-      <motion.h1
-        className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)] font-fredoka mb-2"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-      >
-        Mon Histoire à Moi
-      </motion.h1>
-
       {!isCompleted ? (
         <>
           <motion.div
@@ -218,7 +209,7 @@ export function SlideEmotion({
           </motion.div>
 
           <motion.h2
-            className="text-3xl font-bold text-white drop-shadow-md mb-4 font-fredoka"
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md text-center mb-2 sm:mb-4 font-fredoka"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -227,7 +218,7 @@ export function SlideEmotion({
           </motion.h2>
 
           <motion.p
-            className="text-lg text-white/90 mb-8 font-quicksand"
+            className="text-base sm:text-lg text-white/90 text-center mb-6 md:mb-8 font-quicksand"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
@@ -235,13 +226,13 @@ export function SlideEmotion({
             Choisis un trait de personnalité
           </motion.p>
 
-          <div className="grid grid-cols-2 gap-4 w-full max-w-xl md:grid-cols-3 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-xl mb-4">
             {emotions.map((emotion, index) => (
               <motion.div
                 key={emotion.id}
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
-                className={`cursor-pointer p-4 rounded-2xl shadow-xl border-2 backdrop-blur-md transition-all ${
+                className={`cursor-pointer rounded-2xl p-2 sm:p-3 md:p-4 shadow-xl border-2 backdrop-blur-md transition-all text-sm sm:text-base ${
                   selectedEmotion === emotion.id
                     ? `${emotion.color} border-4 scale-105`
                     : `${emotion.color} opacity-80`
@@ -251,11 +242,13 @@ export function SlideEmotion({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 + 0.6 }}
               >
-                <div className="flex flex-col items-center space-y-2">
-                  <div className="p-3 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <span className="text-4xl">{emotion.icon}</span>
+                <div className="flex flex-col items-center space-y-1 sm:space-y-1">
+                  <div className="p-1 sm:p-2 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <span className="text-xl sm:text-2xl md:text-2xl">
+                      {emotion.icon}
+                    </span>
                   </div>
-                  <span className="font-bold text-center text-lg">
+                  <span className="font-bold text-center text-sm sm:text-base md:text-base">
                     {emotion.label}
                   </span>
                 </div>
@@ -263,10 +256,10 @@ export function SlideEmotion({
             ))}
           </div>
 
-          <div className="flex justify-between space-x-4 w-full max-w-md">
+          <div className="flex flex-row justify-between gap-2 w-full max-w-md mt-6">
             <motion.button
               onClick={onBack}
-              className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
+              className="w-1/2 py-4 mr-2 rounded-full bg-white/20 backdrop-blur-md text-white text-base font-medium shadow-md hover:bg-white/30 transition"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -276,15 +269,11 @@ export function SlideEmotion({
             <motion.button
               onClick={handleComplete}
               disabled={!selectedEmotion}
-              className={`px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
-                !selectedEmotion
-                  ? "bg-white/10 cursor-not-allowed"
-                  : "bg-gradient-to-r from-purple-500 to-pink-500 hover:scale-105"
-              }`}
-              whileHover={selectedEmotion ? { scale: 1.05 } : {}}
-              whileTap={selectedEmotion ? { scale: 0.95 } : {}}
+              className="w-1/2 py-4 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-base font-bold shadow-md transition hover:scale-105"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              Terminer
+              Continuer
             </motion.button>
           </div>
         </>
@@ -357,10 +346,10 @@ export function SlideEmotion({
             </div>
           )}
 
-          <div className="flex flex-col md:flex-row gap-4 w-full max-w-md">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-md">
             <motion.button
               onClick={handleCreateAnother}
-              className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
+              className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -369,7 +358,7 @@ export function SlideEmotion({
 
             <motion.button
               onClick={handleContinueToNextStep}
-              className="px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-lg font-bold shadow-md hover:scale-105 transition"
+              className="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-lg font-bold shadow-md hover:scale-105 transition"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

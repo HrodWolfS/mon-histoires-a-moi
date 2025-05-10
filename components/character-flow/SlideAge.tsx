@@ -34,16 +34,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center h-full">
-      <motion.h1
-        className="text-4xl md:text-5xl font-bold text-white drop-shadow-[0_2px_3px_rgba(0,0,0,0.6)] font-fredoka mb-2"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2, duration: 0.5 }}
-      >
-        Mon Histoire à Moi
-      </motion.h1>
-
+    <div className="flex flex-col items-center justify-center h-full w-full">
       <motion.div
         className="flex flex-col items-center mb-6"
         initial={{ opacity: 0, y: 10 }}
@@ -75,7 +66,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
       </motion.div>
 
       <motion.h2
-        className="text-3xl font-bold text-white drop-shadow-md mb-8 font-fredoka"
+        className="text-xl sm:text-2xl md:text-3xl font-bold text-white drop-shadow-md mb-3 sm:mb-4 font-fredoka text-center"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.5 }}
@@ -93,7 +84,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
           items={ages}
           selectedIndex={selectedIndex}
           onChange={setSelectedIndex}
-          itemHeight={70}
+          itemHeight={48}
           className="max-w-[50%] mx-auto"
           renderItem={(age, selected) => (
             <span
@@ -124,10 +115,19 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
         </div>
       </motion.div>
 
-      <div className="flex justify-between space-x-4 w-full max-w-md mt-8">
+      <motion.p
+        className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 font-quicksand text-center max-w-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        Cette étape est cruciale pour construire une histoire qui reflète
+        fidèlement l'âge de ton personnage.
+      </motion.p>
+
+      <div className="flex flex-row justify-between gap-2 w-full max-w-md mt-6">
         <motion.button
           onClick={onBack}
-          className="px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
+          className="w-1/2 py-4 rounded-full mr-2 bg-white/20 backdrop-blur-md text-white text-base font-medium shadow-md hover:bg-white/30 transition"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -136,7 +136,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
 
         <motion.button
           onClick={handleAgeSelection}
-          className="px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-lg font-bold shadow-md transition hover:scale-105"
+          className="w-1/2 py-4 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-base font-bold shadow-md transition hover:scale-105"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >

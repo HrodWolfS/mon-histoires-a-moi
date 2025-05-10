@@ -46,16 +46,16 @@ export default function SummaryPage() {
 
   return (
     <div
-      className="relative min-h-screen bg-cover bg-center"
+      className="relative min-h-dvh overflow-hidden bg-cover bg-center"
       style={{ backgroundImage: "url('/images/background.png')" }}
     >
       {/* Overlay sombre doux pour lisibilité */}
       <div className="absolute inset-0 bg-black/50" />
 
       {/* Contenu centré */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
-        <div className="rounded-3xl backdrop-blur-xl bg-white/10 p-8 max-w-lg w-full text-white shadow-lg space-y-6 border border-white/20">
-          <h1 className="text-4xl font-bold text-white mb-2 font-fredoka text-center">
+      <div className="relative z-10 flex items-center justify-center min-h-dvh px-4 md:px-8 xl:px-12 py-6 md:py-10">
+        <div className="rounded-3xl backdrop-blur-xl bg-white/10 p-6 md:p-8 max-w-md sm:max-w-lg w-full text-white shadow-lg space-y-6 border border-white/20">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 sm:mb-4 font-fredoka text-center">
             Résumé de ton histoire
           </h1>
 
