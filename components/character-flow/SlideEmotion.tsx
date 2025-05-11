@@ -226,7 +226,7 @@ export function SlideEmotion({
             Choisis un trait de personnalité
           </motion.p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-xl mb-4">
+          <div className="grid grid-cols-2 px-2 grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-xl mb-4">
             {emotions.map((emotion, index) => (
               <motion.div
                 key={emotion.id}
@@ -293,18 +293,18 @@ export function SlideEmotion({
             ✨
           </motion.div>
 
-          <h2 className="text-3xl font-bold text-white mb-4 font-fredoka">
+          <h2 className="text-2xl font-bold text-white mb-4 font-fredoka">
             Personnage créé avec succès!
           </h2>
 
-          <div className="flex flex-col md:flex-row gap-4 items-center bg-white/10 backdrop-blur-md p-6 rounded-xl mb-6">
+          <div className="flex flex-col md:flex-row items-center bg-white/10 backdrop-blur-md p-6 rounded-xl mb-6">
             <img
               src={`/images/${gender}.png`}
               alt={name}
-              className="w-20 h-20 rounded-xl"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl"
             />
-            <div className="text-white">
-              <div className="text-xl font-bold">{name}</div>
+            <div className="text-white text-sm sm:text-base">
+              <div className="text-lg sm:text-xl font-bold">{name}</div>
               <div className="flex items-center gap-2">
                 <span>{age} ans</span>
                 <span>•</span>
@@ -346,10 +346,10 @@ export function SlideEmotion({
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-md">
+          <div className="flex flex-row gap-2 w-full max-w-xs sm:max-w-md mx-auto">
             <motion.button
               onClick={handleCreateAnother}
-              className="w-full sm:w-auto px-6 py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-lg font-medium shadow-md hover:bg-white/30 transition"
+              className="w-1/2 px-1 py-1 sm:px-6 sm:py-3 rounded-full bg-white/20 backdrop-blur-md text-white text-xs sm:text-lg font-medium shadow-md hover:bg-white/30 transition"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -358,11 +358,11 @@ export function SlideEmotion({
 
             <motion.button
               onClick={handleContinueToNextStep}
-              className="w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-lg font-bold shadow-md hover:scale-105 transition"
+              className="w-1/2 px-1 py-1 sm:px-6 sm:py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-xs sm:text-lg font-bold shadow-md transition hover:scale-105"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Choisis maintenant ton thème
+              Choisis ton thème
             </motion.button>
           </div>
         </motion.div>

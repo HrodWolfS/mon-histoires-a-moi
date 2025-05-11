@@ -271,11 +271,12 @@ export function CreateCharacterFlow({
             {hasCharacters && (
               <motion.button
                 onClick={backToList}
-                className="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-white/20 text-white text-sm font-medium hover:bg-white/30 transition"
+                className="absolute bottom-1 md:bottom-6 lg:bottom-8 left-1/2 -translate-x-1/2 
+                 p-1 rounded-full bg-white/20 backdrop-blur-lg text-white text-xs font-medium border border-white/30 hover:bg-white/30 transition"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                Utiliser un personnage existant
+                Changer de personnage
               </motion.button>
             )}
 

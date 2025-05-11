@@ -3,6 +3,7 @@
 import { AudioButton } from "@/components/ui/AudioButton";
 import { Button } from "@/components/ui/button";
 import { useStoryStore } from "@/lib/stores/story";
+import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Home, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -96,41 +97,49 @@ export default function StoryReaderPage() {
             </div>
 
             {/* Navigation entre pages */}
-            <div className="flex flex-col sm:flex-row sm:justify-between items-center mt-8 sm:mt-10 gap-3 sm:gap-0 relative">
+            <div className="w-full mt-8 sm:mt-10 flex items-center">
+              {/* ← Précédent */}
               <Button
-                variant={isFirstPage ? "ghost" : "kids"}
                 onClick={prevPage}
                 disabled={isFirstPage}
-                className={`w-full sm:w-auto ${
-                  isFirstPage ? "opacity-0 cursor-default" : ""
-                }`}
+                variant={isFirstPage ? "ghost" : "kids"}
+                size="icon"
+                className={cn(
+                  "md:px-6 md:py-3 md:w-auto md:h-auto md:rounded-full",
+                  isFirstPage && "opacity-0 cursor-default"
+                )}
               >
-                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                <span className="hidden sm:inline">Page précédente</span>
+                <ArrowLeft className="w-4 h-4" />
+                <span className="hidden md:inline ml-2">Page précédente</span>
               </Button>
 
-              {/* Centrage absolu pour le bouton audio, ajuster pour mobile si nécessaire */}
-              <div className="order-first sm:order-none sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2">
+              {/* 🔊 Audio */}
+              <div className="flex-1 flex justify-center items-center">
                 <AudioButton text={current.content} />
               </div>
 
+              {/* → Suivant / Nouvelle histoire */}
               {isLastPage ? (
                 <Button
-                  variant="success"
                   onClick={handleReset}
-                  className="w-full sm:w-auto sm:ml-auto"
+                  variant="success"
+                  size="icon"
+                  className="md:px-6 md:py-3 md:w-auto md:h-auto md:rounded-full"
                 >
-                  <RefreshCw className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
-                  <span className="hidden sm:inline">Nouvelle histoire</span>
+                  <RefreshCw className="w-4 h-4" />
+                  <span className="hidden md:inline ml-2">
+                    Nouvelle histoire
+                  </span>
                 </Button>
               ) : (
                 <Button
-                  variant="kids"
                   onClick={nextPage}
-                  className="w-full sm:w-auto"
+                  variant="kids"
+                  size="icon"
+                  className="md:px-6 md:py-3 md:w-auto md:h-auto md:rounded-full"
                 >
-                  <span className="hidden sm:inline">Page suivante</span>
-                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-2" />
+                  <span className="hidden md:inline mr-2">Page suivante</span>
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               )}
             </div>
