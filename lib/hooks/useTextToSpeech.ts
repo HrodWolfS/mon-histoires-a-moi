@@ -1,16 +1,20 @@
 "use client";
+
 import { useRef, useState } from "react";
 import { useAIClient } from "./useAIClient";
 
+// Fonction de vérification si on est côté client
+const isClient = () => typeof window !== "undefined";
+
 export function useTextToSpeech() {
-  const { request } = useAIClient();
+  const client = useAIClient();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const playText = async (text: string, voice: "nova" | "shimmer" = "nova") => {
-    if (isLoading || isPlaying) return;
+    if (isLoading || isPlaying || !isClient()) return;
 
     setIsLoading(true);
     setError(null);
@@ -18,27 +22,25 @@ export function useTextToSpeech() {
 
     try {
       let audioSrc: string | null = null;
-      const cached = localStorage.getItem(cacheKey);
+      const cached = isClient() ? localStorage.getItem(cacheKey) : null;
 
       if (cached) {
         audioSrc = cached;
       } else {
-        const blob = await request<Blob>("audio/speech", {
-          model: "tts-1",
-          input: text,
-          voice,
-          response_format: "mp3",
-        });
+        if (!client) {
+          throw new Error("Clé API OpenAI manquante ou invalide");
+        }
 
-        if (!blob || blob.size === 0) {
-          throw new Error(
-            "Le service audio n'a pas retourné de données valides."
-          );
+        const blob = await client.generateSpeech(text);
+        if (!blob) {
+          throw new Error("Échec de la génération audio");
         }
 
         audioSrc = URL.createObjectURL(blob);
         try {
-          localStorage.setItem(cacheKey, audioSrc);
+          if (isClient()) {
+            localStorage.setItem(cacheKey, audioSrc);
+          }
         } catch (e) {
           console.warn("Impossible de mettre en cache l'audio:", e);
         }
@@ -67,9 +69,15 @@ export function useTextToSpeech() {
 
       setIsPlaying(true);
       await audio.play();
-    } catch (e: any) {
-      console.error("Erreur:", e);
-      setError(e.message || "Erreur lors de la lecture");
+    } catch (e: unknown) {
+      let errorMessage = "Erreur inconnue lors de la génération audio.";
+      if (typeof e === "string") {
+        errorMessage = e;
+      } else if (e instanceof Error) {
+        errorMessage = e.message;
+      }
+      setError(errorMessage);
+      console.error("Error generating speech:", e);
       setIsPlaying(false);
       audioRef.current = null;
     } finally {

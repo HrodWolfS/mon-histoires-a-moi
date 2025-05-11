@@ -4,13 +4,16 @@ import { useCharacterStore } from "@/lib/stores/character";
 import { useWizardStore } from "@/lib/stores/wizard";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+// Fonction de vérification si on est côté client
+const isClient = () => typeof window !== "undefined";
+
 export type StorySection = {
   title: string;
   content: string;
 };
 
 export function useStoryGenerator() {
-  const { request } = useAIClient();
+  const client = useAIClient();
   const getSelectedCharacter = useCharacterStore((s) => s.getSelectedCharacter);
   const hydrated = useCharacterStore((s) => s.hydrated);
   const resetTheme = useWizardStore((s) => s.resetTheme);
@@ -19,13 +22,14 @@ export function useStoryGenerator() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [character, setCharacter] = useState<any>(null);
+  const [character, setCharacter] = useState<unknown>(null);
   const generationInProgress = useRef(false);
 
   useEffect(() => {
+    if (!isClient()) return;
+
     if (hydrated) {
       const selectedCharacter = getSelectedCharacter();
-      console.log("Personnage sélectionné :", selectedCharacter);
       setCharacter(selectedCharacter);
     }
   }, [hydrated, getSelectedCharacter]);
@@ -47,8 +51,8 @@ export function useStoryGenerator() {
   const generateStory = useCallback(async (): Promise<
     StorySection[] | null
   > => {
-    if (generationInProgress.current) {
-      console.log("Génération déjà en cours, ignorée");
+    if (!isClient() || generationInProgress.current) {
+      console.log("Génération déjà en cours ou environnement serveur, ignorée");
       return null;
     }
 
@@ -61,6 +65,13 @@ export function useStoryGenerator() {
         setError(
           "Chargement des données du personnage en cours, veuillez patienter..."
         );
+        setLoading(false);
+        generationInProgress.current = false;
+        return null;
+      }
+
+      if (!client) {
+        setError("Clé API OpenAI manquante ou invalide");
         setLoading(false);
         generationInProgress.current = false;
         return null;
@@ -145,14 +156,12 @@ IMPORTANT :
 - Assure-toi que le texte est approprié pour un enfant de ${characterAge} ans
 `;
 
-      const response = await request("chat/completions", {
-        model: "gpt-4",
-        messages: [{ role: "user", content: prompt }],
-        temperature: 0.9,
-        max_tokens: 1500,
-      });
+      const text = await client.generateStory(prompt);
+      if (!text) {
+        setError("Erreur lors de la génération de l'histoire");
+        return null;
+      }
 
-      const text = response.choices?.[0]?.message?.content || "";
       try {
         const parsed = JSON.parse(text);
         resetTheme();
@@ -164,15 +173,17 @@ IMPORTANT :
         );
         return null;
       }
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error("Erreur lors de la génération:", e);
-      setError(e.message || "Erreur de génération de l'histoire");
+      setError(
+        e instanceof Error ? e.message : "Erreur de génération de l'histoire"
+      );
       return null;
     } finally {
       setLoading(false);
       generationInProgress.current = false;
     }
-  }, [request, getSelectedCharacter, hydrated, resetTheme]);
+  }, [client, getSelectedCharacter, hydrated, resetTheme]);
 
   return { generateStory, loading, error, hydrated, character };
 }

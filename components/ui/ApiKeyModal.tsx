@@ -48,7 +48,7 @@ export const ApiKeyModal = ({ open, onClose }: Props) => {
           Cette clé magique permet de générer les histoires.
           <br />
           Elle est stockée <span className="font-bold">localement</span> et{" "}
-          <span className="font-bold">n'est envoyée à personne.</span>
+          <span className="font-bold">n&apos;est envoyée à personne.</span>
         </p>
 
         <div className="relative flex items-center">
@@ -70,14 +70,8 @@ export const ApiKeyModal = ({ open, onClose }: Props) => {
             <HelpCircle className="w-6 h-6" />
           </button>
         </div>
-        <p className="text-sm mt-3 text-white/80 text-center">
-          Tu ne sais pas comment faire ?{" "}
-          <a
-            href="/aide/cle-api"
-            className="underline text-yellow-300 hover:text-yellow-200 font-bold"
-          >
-            Suis ce guide
-          </a>
+        <p className="text-sm opacity-80 mb-4">
+          Tu n&apos;as besoin de le faire qu&apos;une fois.
         </p>
         <Button
           variant="success"

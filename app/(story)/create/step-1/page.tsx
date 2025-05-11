@@ -10,17 +10,16 @@ import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
-
-  // Utilisation du store Zustand
   const resetCurrentCharacter = useCharacterStore(
     (state) => state.resetCurrentCharacter
   );
 
-  // S'assurer que le store est réinitialisé lorsqu'on démarre à cette étape
   useEffect(() => {
+    // S'assurer que le store est réinitialisé lorsqu'on démarre à cette étape
     resetCurrentCharacter();
-  }, [resetCurrentCharacter]);
+  }, []); // Pas de dépendances pour n'exécuter qu'une seule fois au montage
 
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const handleComplete = (character: CharacterDraft) => {
     // La navigation sera gérée dans le composant SlideEmotion
     // Le store s'occupe déjà de sauvegarder les données

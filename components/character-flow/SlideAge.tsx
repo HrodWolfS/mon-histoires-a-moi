@@ -121,7 +121,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
         animate={{ opacity: 1 }}
       >
         Cette étape est cruciale pour construire une histoire qui reflète
-        fidèlement l'âge de ton personnage.
+        fidèlement l&apos;âge de ton personnage.
       </motion.p>
 
       <div className="flex flex-row justify-between gap-2 w-full max-w-md mt-6">
@@ -143,6 +143,16 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
           Continuer
         </motion.button>
       </div>
+
+      <motion.p
+        className="text-base sm:text-lg text-white/90 mb-6 sm:mb-8 font-quicksand text-center max-w-md"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <span className="text-yellow-300">
+          Tu n&apos;as pas besoin d&apos;être précis !
+        </span>
+      </motion.p>
     </div>
   );
 }

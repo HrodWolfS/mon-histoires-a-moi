@@ -138,7 +138,7 @@ export function SlideName({ gender, onNext, onBack }: SlideNameProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          Comment s'appelle ton {gender === "boy" ? "héros" : "héroïne"} ?
+          Comment s&apos;appelle ton {gender === "boy" ? "héros" : "héroïne"} ?
         </motion.h2>
 
         <motion.p
@@ -187,6 +187,10 @@ export function SlideName({ gender, onNext, onBack }: SlideNameProps) {
             </div>
           </motion.form>
         </div>
+
+        <p className="text-white/90 text-sm text-center">
+          Ce sera le héros de l&apos;histoire !
+        </p>
       </div>
     </div>
   );

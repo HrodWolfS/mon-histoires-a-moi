@@ -56,7 +56,7 @@ export function CharactersList({
   if (characters.length === 0) {
     return (
       <div className="text-center text-white/70 py-4">
-        Aucun personnage créé pour l'instant
+        Aucun personnage créé pour l&apos;instant
       </div>
     );
   }
@@ -173,6 +173,12 @@ export function CharactersList({
           </motion.div>
         ))}
       </div>
+
+      {!characters.length && (
+        <div className="text-center py-8 text-white/80">
+          <p>Tu n&apos;as pas encore créé de personnage.</p>
+        </div>
+      )}
     </div>
   );
 }

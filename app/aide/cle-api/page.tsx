@@ -61,7 +61,7 @@ export default function ApiKeyGuidePage() {
             </li>
             <li>
               <strong className="text-yellow-300 font-fredoka text-xl">
-                3. Clique sur "Create new secret key"
+                3. Clique sur &quot;Create new secret key&quot;
               </strong>
               <br />
               Donne-lui un nom si tu veux, puis copie la clé qui commence par{" "}
@@ -72,7 +72,7 @@ export default function ApiKeyGuidePage() {
             </li>
             <li>
               <strong className="text-yellow-300 font-fredoka text-xl">
-                4. Reviens dans l'application
+                4. Reviens dans l&apos;application
               </strong>
               <br />
               Colle la clé dans le champ prévu dans le modal de configuration.
@@ -83,7 +83,7 @@ export default function ApiKeyGuidePage() {
             <p>
               Ta clé est stockée uniquement dans ton navigateur.
               <br />
-              Elle n'est <strong>jamais partagée</strong> ni envoyée à un
+              Elle n&apos;est <strong>jamais partagée</strong> ni envoyée à un
               serveur.
             </p>
           </div>
@@ -93,7 +93,7 @@ export default function ApiKeyGuidePage() {
           href="/"
           className="mt-8 inline-flex items-center justify-center text-sm text-center w-full text-white hover:text-yellow-300 transition-colors font-medium bg-purple-800/30 py-3 rounded-full hover:bg-purple-800/50"
         >
-          ← Retour à l'accueil
+          ← Retour à l&apos;accueil
         </Link>
       </div>
     </div>

@@ -18,21 +18,28 @@ const emotions: Record<string, { label: string; icon: string }> = {
   sad: { label: "Triste", icon: "😢" },
 };
 
-type CreateThemeFlowProps = {
-  onComplete: () => void;
+export type ThemeDraft = {
+  mission: string;
+  missionDetails?: string;
+  location: string;
+  locationDetails?: string;
+  morale?: string;
 };
 
-export function CreateThemeFlow({ onComplete }: CreateThemeFlowProps) {
-  const [currentStep, setCurrentStep] = useState<0 | 1 | 2>(0);
+type CreateThemeFlowProps = {
+  onComplete: (theme: ThemeDraft) => void;
+};
+
+export function CreateThemeFlow({
+  onComplete: _onComplete, // eslint-disable-line @typescript-eslint/no-unused-vars
+}: CreateThemeFlowProps) {
+  const [currentStep, setCurrentStep] = useState<0 | 1 | 2 | 3>(0);
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
 
   // Récupérer les informations du store
   const mission = useWizardStore((state) => state.mission);
-  const missionDetails = useWizardStore((state) => state.missionDetails);
   const location = useWizardStore((state) => state.location);
-  const locationDetails = useWizardStore((state) => state.locationDetails);
-  const morale = useWizardStore((state) => state.morale);
 
   // Récupérer le personnage sélectionné
   const getSelectedCharacter = useCharacterStore(

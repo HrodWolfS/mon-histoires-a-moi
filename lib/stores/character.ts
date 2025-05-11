@@ -2,6 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+// Fonction de vérification si on est côté client
+const isClient = () => typeof window !== "undefined";
+
 export type Character = {
   id: string;
   gender: "boy" | "girl";
@@ -110,6 +113,11 @@ export const useCharacterStore = create<CharacterStore>()(
       loadFromLocalStorage: () => {
         // Cette fonction est automatiquement gérée par persist
         // mais on peut l'utiliser pour forcer le rechargement
+        if (!isClient()) {
+          set({ hydrated: true });
+          return;
+        }
+
         const stored = localStorage.getItem("character-storage");
         if (stored) {
           try {
@@ -125,6 +133,11 @@ export const useCharacterStore = create<CharacterStore>()(
       },
 
       hydrate: () => {
+        if (!isClient()) {
+          set({ hydrated: true });
+          return;
+        }
+
         const local = localStorage.getItem("character-storage");
         if (local) {
           try {
@@ -146,11 +159,6 @@ export const useCharacterStore = create<CharacterStore>()(
                   currentCharacter: selectedCharacter || characters[0] || {},
                   hydrated: true,
                 });
-
-                console.log(
-                  "Hydrate: personnage chargé",
-                  selectedCharacter || characters[0]
-                );
               } else {
                 set({ hydrated: true });
               }

@@ -114,33 +114,27 @@ const FloatingStars = () => {
 };
 
 export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
-  // Store pour gérer le choix de lieu
-  const addLocation = useWizardStore((state) => state.addLocation);
-  const currentLocation = useWizardStore((state) => state.location);
-  const currentDetails = useWizardStore((state) => state.locationDetails);
-  const mission = useWizardStore((state) => state.mission);
+  const store = useWizardStore();
+  const selectedLocation = store.location;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _mission = store.mission;
 
-  // États locaux pour le lieu et les détails et options
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(
-    currentLocation
-  );
-  const [locationDetails, setLocationDetails] = useState<string>(
-    currentDetails || ""
-  );
+  const [localLocation, setLocalLocation] = useState(selectedLocation || "");
+  const [locationDetails, setLocationDetails] = useState<string>("");
   const [useRandomLocation, setUseRandomLocation] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [suggestionTimeout, setSuggestionTimeout] =
     useState<NodeJS.Timeout | null>(null);
 
   // Déterminer si le lieu nécessite des détails ou permet le mode aléatoire
-  const isCustomLocation = selectedLocation === "Crée ton lieu";
-  const isRandomAllowed = selectedLocation === "Tu me laisses choisir ?";
+  const isCustomLocation = localLocation === "Crée ton lieu";
+  const isRandomAllowed = localLocation === "Tu me laisses choisir ?";
   const isStandardLocation =
-    selectedLocation && !isCustomLocation && !isRandomAllowed;
+    localLocation && !isCustomLocation && !isRandomAllowed;
 
   // Sélectionner un lieu
   const handleSelectLocation = (location: string) => {
-    setSelectedLocation(location);
+    setLocalLocation(location);
     setLocationDetails("");
     setError("");
 
@@ -184,7 +178,7 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
         loc.title !== "Crée ton lieu" && loc.title !== "Tu me laisses choisir ?"
     );
     const randomIndex = Math.floor(Math.random() * standardLocations.length);
-    setSelectedLocation(standardLocations[randomIndex].title);
+    setLocalLocation(standardLocations[randomIndex].title);
     setLocationDetails("");
     setUseRandomLocation(false);
     setError("");
@@ -201,7 +195,7 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
 
   // Quand l'utilisateur continue vers l'étape suivante
   const handleContinue = () => {
-    if (selectedLocation) {
+    if (localLocation) {
       // Validation en fonction du type de lieu sélectionné
       if (isCustomLocation && !locationDetails.trim()) {
         setError("Décris ton lieu magique pour continuer ✨");
@@ -219,8 +213,8 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
       }
 
       // Sauvegarde dans le store
-      addLocation(
-        selectedLocation,
+      store.addLocation(
+        localLocation,
         useRandomLocation ? null : locationDetails.trim() || null
       );
       onNext();
@@ -238,7 +232,7 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
           <motion.div
             key={location.title}
             className={`cursor-pointer rounded-xl p-2 sm:p-3 md:p-4 backdrop-blur-md transition-all transform text-sm sm:text-base md:text-lg ${
-              selectedLocation === location.title
+              localLocation === location.title
                 ? "bg-cyan-500/40 border-2 border-white scale-105"
                 : "bg-white/10 border border-white/20 hover:bg-white/20"
             }`}
@@ -264,7 +258,7 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
         ))}
       </div>
 
-      {selectedLocation && (
+      {localLocation && (
         <motion.div
           className="bg-white/10 backdrop-blur-md rounded-xl p-4 mt-4 w-full max-w-md mx-auto transition-all"
           initial={{ opacity: 0, y: 10 }}
@@ -286,8 +280,7 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
                 id="locationDetails"
                 type="text"
                 placeholder={`Exemple : ${
-                  locationPlaceholders[selectedLocation] ||
-                  "donne plus de détails"
+                  locationPlaceholders[localLocation] || "donne plus de détails"
                 }`}
                 value={locationDetails}
                 onChange={(e) => {
@@ -352,14 +345,14 @@ export function SlideLocation({ onNext, onBack }: SlideLocationProps) {
 
         <motion.button
           onClick={handleContinue}
-          disabled={!selectedLocation}
+          disabled={!localLocation}
           className={`w-full sm:w-auto px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
-            !selectedLocation
+            !localLocation
               ? "bg-gray-400/50 cursor-not-allowed"
               : "bg-gradient-to-r from-cyan-500 to-blue-500 hover:scale-105"
           }`}
-          whileHover={selectedLocation ? { scale: 1.05 } : {}}
-          whileTap={selectedLocation ? { scale: 0.95 } : {}}
+          whileHover={localLocation ? { scale: 1.05 } : {}}
+          whileTap={localLocation ? { scale: 0.95 } : {}}
         >
           Continuer
         </motion.button>

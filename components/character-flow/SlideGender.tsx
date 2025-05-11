@@ -90,7 +90,7 @@ export function SlideGender({ onNext }: SlideGenderProps) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        Une aventure magique qui t'appartient
+        Une aventure magique qui t&apos;appartient
       </motion.p>
 
       <motion.h2
@@ -101,6 +101,10 @@ export function SlideGender({ onNext }: SlideGenderProps) {
       >
         Qui est le héros de ton histoire ?
       </motion.h2>
+
+      <p className="text-base sm:text-lg text-white/90 text-center max-w-md mb-4">
+        L&apos;apparence de ton personnage détermine son image
+      </p>
 
       <div className="flex flex-row gap-10">
         <motion.button
