@@ -108,6 +108,7 @@ export function SlideGender({ onNext }: SlideGenderProps) {
 
       <div className="flex flex-row gap-10">
         <motion.button
+          data-testid="gender-boy"
           onClick={() => handleGenderSelect("boy")}
           className="flex flex-col items-center hover:scale-105 transition-all relative cursor-pointer"
           whileHover={{ scale: 1.05, y: -5 }}
@@ -143,6 +144,7 @@ export function SlideGender({ onNext }: SlideGenderProps) {
         </motion.button>
 
         <motion.button
+          data-testid="gender-girl"
           onClick={() => handleGenderSelect("girl")}
           className="flex flex-col items-center hover:scale-105 transition-all relative cursor-pointer"
           whileHover={{ scale: 1.05, y: -5 }}

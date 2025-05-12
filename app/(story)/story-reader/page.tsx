@@ -59,7 +59,10 @@ export default function StoryReaderPage() {
           backgroundPosition: "center",
         }}
       >
-        <div className="w-full max-w-[1000px] mx-auto px-4 md:px-8 xl:px-12 py-6 md:py-10">
+        <div
+          className="w-full max-w-[1000px] mx-auto px-4 md:px-8 xl:px-12 py-6 md:py-10"
+          data-testid="reader-root"
+        >
           {/* Pagination et progression */}
           <div className="flex justify-between items-center mb-6">
             <div className="text-sm text-white/70">
@@ -124,6 +127,7 @@ export default function StoryReaderPage() {
                     "md:px-6 md:py-3 md:w-auto md:h-auto md:rounded-full",
                     isFirstPage && "opacity-0 cursor-default"
                   )}
+                  data-testid="arrow-prev"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span className="hidden md:inline ml-2">Page précédente</span>
@@ -131,13 +135,14 @@ export default function StoryReaderPage() {
 
                 {/* 🔊 Audio */}
                 <div className="flex-1 flex justify-center items-center">
-                  <AudioButton text={current.content} />
+                  <AudioButton text={current.content} data-testid="btn-audio" />
                 </div>
 
                 {/* → Suivant / Nouvelle histoire */}
                 {isLastPage ? (
                   <Button
                     onClick={handleNewStory}
+                    data-testid="btn-new-story"
                     variant="success"
                     size="icon"
                     className="md:px-6 md:py-3 md:w-auto md:h-auto md:rounded-full"
@@ -153,6 +158,7 @@ export default function StoryReaderPage() {
                     variant="kids"
                     size="icon"
                     className="md:px-6 md:py-3 md:w-auto md:h-auto md:rounded-full"
+                    data-testid="arrow-next"
                   >
                     <span className="hidden md:inline mr-2">Page suivante</span>
                     <ArrowRight className="w-4 h-4" />

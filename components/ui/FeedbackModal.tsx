@@ -54,6 +54,7 @@ export default function FeedbackModal({
 
               <a
                 onClick={onNoThanks}
+                data-testid="btn-no-thanks"
                 className="text-white hover:text-white/40 px-2 py-2 underline cursor-pointer"
               >
                 Non merci

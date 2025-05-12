@@ -82,6 +82,11 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
               className={`text-xl text-center font-fredoka transition-all ${
                 selected ? "text-white font-bold scale-105" : "text-white/50"
               }`}
+              data-testid={
+                moral === "Le courage triomphe toujours"
+                  ? "morale-courage"
+                  : undefined
+              }
             >
               {moral}
             </p>
@@ -133,6 +138,7 @@ export function SlideMorale({ onNext, onBack }: SlideMoraleProps) {
         </motion.button>
         <motion.button
           onClick={handleContinue}
+          data-testid="btn-next"
           className={`w-full sm:w-auto px-6 py-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 text-white text-lg font-bold shadow-md transition ${
             disabledButton && "opacity-50 cursor-not-allowed"
           }`}

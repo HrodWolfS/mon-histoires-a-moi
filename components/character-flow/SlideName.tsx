@@ -163,6 +163,7 @@ export function SlideName({ gender, onNext, onBack }: SlideNameProps) {
               value={name}
               onChange={(e) => setLocalName(e.target.value)}
               placeholder="Prénom"
+              data-testid="input-name"
               className="w-full text-center py-3 px-3 rounded-full bg-white/80 backdrop-blur-md text-xl font-medium shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
             />
 

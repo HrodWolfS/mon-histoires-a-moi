@@ -107,6 +107,7 @@ export default function SummaryPage() {
             <button
               className="px-8 py-3 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold shadow-xl hover:scale-105 transition"
               onClick={() => router.push("/create/story-loading")}
+              data-testid="btn-generate-story"
             >
               Générer mon histoire
             </button>

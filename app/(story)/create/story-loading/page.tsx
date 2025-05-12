@@ -63,7 +63,7 @@ export default function StoryLoadingPage() {
           console.log("Histoire générée avec succès");
           generationSuccess.current = true;
           setStory(story);
-          router.push("/create/story-reader");
+          router.push("/story-reader");
         } else {
           console.log("Pas d'histoire générée");
           generationStarted.current = false;

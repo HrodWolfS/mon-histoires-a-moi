@@ -86,6 +86,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
           onChange={setSelectedIndex}
           itemHeight={48}
           className="max-w-[50%] mx-auto"
+          data-testid="wheel-age"
           renderItem={(age, selected) => (
             <span
               className={`text-4xl  text-center font-bold ${
@@ -139,6 +140,7 @@ export function SlideAge({ onNext, onBack, gender, name }: SlideAgeProps) {
           className="w-1/2 py-4 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-base font-bold shadow-md transition hover:scale-105"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
+          data-testid="btn-next"
         >
           Continuer
         </motion.button>

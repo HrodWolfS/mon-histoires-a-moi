@@ -204,6 +204,11 @@ export function SlideMission({ onNext, onBack }: SlideMissionProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 + 0.6 }}
+            data-testid={
+              mission.title === "Trouver un trésor"
+                ? "mission-treasure"
+                : undefined
+            }
           >
             <div className="flex flex-col items-center text-center gap-1 sm:gap-2">
               <span className="text-2xl sm:text-3xl md:text-3xl mb-1">
@@ -247,6 +252,7 @@ export function SlideMission({ onNext, onBack }: SlideMissionProps) {
               }}
               disabled={useRandom}
               className="rounded-md px-4 py-2 w-full text-white bg-white/10 placeholder:text-white/50 disabled:opacity-50 border border-white/20 focus:outline-none focus:border-purple-400"
+              data-testid="input-mission-details"
             />
 
             {error && <p className="text-sm text-red-400 mt-2">{error}</p>}
@@ -294,6 +300,7 @@ export function SlideMission({ onNext, onBack }: SlideMissionProps) {
         <motion.button
           onClick={handleContinue}
           disabled={!selectedMission}
+          data-testid="btn-next"
           className={`w-full sm:w-auto px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
             !selectedMission
               ? "bg-gray-400/50 cursor-not-allowed"

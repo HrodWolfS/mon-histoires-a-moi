@@ -241,6 +241,9 @@ export function SlideEmotion({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 + 0.6 }}
+                data-testid={
+                  emotion.id === "happy" ? "emotion-happy" : undefined
+                }
               >
                 <div className="flex flex-col items-center space-y-1 sm:space-y-1">
                   <div className="p-1 sm:p-2 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
@@ -269,6 +272,7 @@ export function SlideEmotion({
             <motion.button
               onClick={handleComplete}
               disabled={!selectedEmotion}
+              data-testid="btn-next"
               className="w-1/2 py-4 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-base font-bold shadow-md transition hover:scale-105"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -358,6 +362,7 @@ export function SlideEmotion({
 
             <motion.button
               onClick={handleContinueToNextStep}
+              data-testid="btn-go-theme"
               className="w-1/2 px-1 py-1 sm:px-6 sm:py-3 rounded-full bg-gradient-to-r from-green-500 to-teal-500 text-white text-xs sm:text-lg font-bold shadow-md transition hover:scale-105"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

@@ -178,6 +178,7 @@ export function CreateCharacterFlow({
               <motion.button
                 onClick={handleCharacterSelect}
                 disabled={!hasSelectedCharacter}
+                data-testid="btn-go-theme"
                 className={`px-6 py-3 rounded-full text-white text-lg font-bold shadow-md transition ${
                   !hasSelectedCharacter
                     ? "bg-gray-400/50 cursor-not-allowed"

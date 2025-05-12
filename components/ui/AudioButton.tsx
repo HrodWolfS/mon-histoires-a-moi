@@ -7,12 +7,14 @@ interface AudioButtonProps {
   text: string;
   voice?: "nova" | "shimmer"; // Optionnel pour choisir la voix
   className?: string;
+  "data-testid"?: string;
 }
 
 export function AudioButton({
   text,
   voice = "nova",
   className,
+  "data-testid": dataTestId,
 }: AudioButtonProps) {
   const { playText, isPlaying, isLoading, error } = useTextToSpeech();
   const [iconIndex, setIconIndex] = useState(0);
@@ -48,6 +50,7 @@ export function AudioButton({
           (isLoading || isPlaying) && "cursor-not-allowed opacity-70",
           isPlaying && "bg-purple-500/30"
         )}
+        data-testid={dataTestId}
       >
         <span className="text-lg sm:text-xl">
           {isLoading ? "⏳" : icons[iconIndex]}

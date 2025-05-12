@@ -85,6 +85,7 @@ export function WheelSelector<T>({
           {items.map((item, index) => (
             <motion.div
               key={index}
+              data-testid={typeof item === "number" ? `age-${item}` : undefined}
               className="flex items-center justify-center w-full transition-all cursor-pointer px-4"
               style={{
                 height: itemHeight,
