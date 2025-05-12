@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import {
   Comic_Neue,
@@ -77,6 +78,7 @@ export default function RootLayout({
       >
         <ClientInit />
         {children}
+        <Analytics />
       </body>
     </html>
   );
