@@ -6,7 +6,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
-        with: { version: "8" }
+        with: { version: "10" }
+
+      - name: Debug Directory Structure
+        run: |
+          echo "Current directory (in e2e.yml):"
+          pwd
+          echo "Listing files (in e2e.yml):"
+          ls -la
+
       - run: pnpm i --frozen-lockfile
       - run: pnpm exec playwright install --with-deps
       - run: pnpm run test:e2e
