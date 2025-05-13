@@ -10,6 +10,9 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:3000",
     ...(process.env.HEADED === "1" && { slowMo: 200 }),
+    contextOptions: {
+      reducedMotion: "reduce",
+    },
   },
   projects: [
     {
