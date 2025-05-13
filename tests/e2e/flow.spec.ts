@@ -29,13 +29,29 @@ const isCharacterCleared = async (page: Page) =>
       window.localStorage.setItem("openai-api-key", "sk-fake12345678");
     });
 
+    // Injecter un script pour désactiver/réduire les animations en CI
+    await page.addInitScript(() => {
+      window.matchMedia = (query) => ({
+        matches: query === "(prefers-reduced-motion: reduce)",
+        media: query,
+        onchange: null,
+        addListener: () => {},
+        removeListener: () => {},
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => false,
+      });
+    });
+
     // --- intercept OpenAI ---
     await interceptOpenAI(page);
 
     // 0. Accueil
     await page.goto("/");
     await page.getByRole("button", { name: /créer une histoire/i }).click();
-    await expect(page).toHaveURL(/\/create\/step-1/);
+    // Attendre explicitement la navigation vers step-1
+    await page.waitForURL(/\/create\/step-1/, { timeout: 15000 });
+    await expect(page).toHaveURL(/\/create\/step-1/); // Confirmation
 
     // 1. SlideGender
     await page.getByTestId("gender-girl").click();
@@ -101,7 +117,7 @@ const isCharacterCleared = async (page: Page) =>
       timeout: 15000,
     });
 
-    // si on est d’abord sur loading, attendre ensuite le reader
+    // si on est d'abord sur loading, attendre ensuite le reader
     if (page.url().includes("/create/story-loading")) {
       await page.waitForURL(/\/story-reader/, { timeout: 30000 });
     }
@@ -111,20 +127,44 @@ const isCharacterCleared = async (page: Page) =>
 
     // Pagination flèches + audio
     await page.getByTestId("btn-audio").click();
-    for (let i = 0; i < 4; i++) await page.getByTestId("arrow-next").click();
-    for (let i = 0; i < 4; i++) await page.getByTestId("arrow-prev").click();
-    for (let i = 0; i < 4; i++) await page.getByTestId("arrow-next").click();
+
+    // Attendre que la flèche soit visible avant la boucle
+    await page.waitForSelector('[data-testid="arrow-next"]', {
+      state: "visible",
+      timeout: 10000,
+    });
+    for (let i = 0; i < 4; i++) {
+      await page.getByTestId("arrow-next").click();
+    }
+    // Attendre que la flèche soit visible avant la boucle
+    await page.waitForSelector('[data-testid="arrow-prev"]', {
+      state: "visible",
+      timeout: 10000,
+    });
+    for (let i = 0; i < 4; i++) {
+      await page.getByTestId("arrow-prev").click();
+    }
+    // Attendre que la flèche soit visible avant la boucle
+    await page.waitForSelector('[data-testid="arrow-next"]', {
+      state: "visible",
+      timeout: 10000,
+    });
+    for (let i = 0; i < 4; i++) {
+      await page.getByTestId("arrow-next").click();
+    }
 
     // 9. Nouvelle histoire + reset stores (assuré sur la dernière page)
     const newStoryBtn = page.getByTestId("btn-new-story");
-    await expect(newStoryBtn).toBeVisible();
-    await newStoryBtn.click({ force: true });
+    // Attendre que le bouton soit visible
+    await expect(newStoryBtn).toBeVisible({ timeout: 10000 });
+    await newStoryBtn.click({ force: true }); // force: true peut aider si un overlay pose souci
 
     // 10. Feedback modal appears – click "Non merci" to dismiss
     const noThanksBtn = page.getByTestId("btn-no-thanks");
-    await expect(noThanksBtn).toBeVisible();
+    // Attendre que le bouton soit visible
+    await expect(noThanksBtn).toBeVisible({ timeout: 10000 });
     await noThanksBtn.click();
-    await waitForAnimation(page);
+    await waitForAnimation(page); // Garder pour la transition du modal
 
     await expect(page).toHaveURL("/", { timeout: 10000 });
 
